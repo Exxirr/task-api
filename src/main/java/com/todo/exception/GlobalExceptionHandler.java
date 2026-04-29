@@ -14,28 +14,33 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String,Object>> handleNotFound(ResourceNotFoundException ex){
+    public ResponseEntity<ErrorMessage> handleNotFound(ResourceNotFoundException ex){
 
-        Map<String,Object> error = new HashMap<>();
-
-        error.put("message", ex.getMessage());
-        error.put("status", HttpStatus.NOT_FOUND.value());
-        error.put("timestamp", LocalDateTime.now());
+        ErrorMessage error = new ErrorMessage();
+        error.setMessage(ex.getMessage());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setTimestamp(LocalDateTime.now());
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String,Object>> handleValidationErrors(MethodArgumentNotValidException ex){
+    public ResponseEntity<ErrorMessage> handleValidationErrors(MethodArgumentNotValidException ex){
 
-        Map<String,Object> errors = new HashMap<>();
+        Map<String,String> errors = new HashMap<>();
 
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errors.put(error.getField(), error.getDefaultMessage());
         });
 
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        ErrorMessage error = new ErrorMessage();
+        error.setMessage("Validation Failed");
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setTimestamp(LocalDateTime.now());
+        error.setErrors(errors);
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 
     }
 

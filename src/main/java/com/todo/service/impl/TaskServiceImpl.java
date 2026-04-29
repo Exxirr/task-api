@@ -28,14 +28,7 @@ public class TaskServiceImpl implements TaskService {
         List<TaskResponse> responses = new ArrayList<>();
 
         for(Task task : tasks){
-
-            TaskResponse response = new TaskResponse();
-            response.setId(task.getId());
-            response.setTitle(task.getTitle());
-            response.setDescription(task.getDescription());
-            response.setCompleted(task.getCompleted());
-
-            responses.add(response);
+            responses.add(mapToResponse(task));
         }
 
         return responses;
@@ -49,15 +42,7 @@ public class TaskServiceImpl implements TaskService {
         List<TaskResponse> responses = new ArrayList<>();
 
         for(Task task : tasks){
-
-            TaskResponse response = new TaskResponse();
-
-            response.setId(task.getId());
-            response.setTitle(task.getTitle());
-            response.setDescription(task.getDescription());
-            response.setCompleted(task.getCompleted());
-
-            responses.add(response);
+            responses.add(mapToResponse(task));
         }
 
         return responses;
@@ -69,14 +54,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task task =  taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with Id " + id));
 
-        TaskResponse response = new TaskResponse();
-
-        response.setId(task.getId());
-        response.setTitle(task.getTitle());
-        response.setDescription(task.getDescription());
-        response.setCompleted(task.getCompleted());
-
-        return response;
+        return mapToResponse(task);
 
     }
 
@@ -88,14 +66,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task task =  taskRepository.save(taskExisting);
 
-        TaskResponse response = new TaskResponse();
-
-        response.setId(task.getId());
-        response.setTitle(task.getTitle());
-        response.setDescription(task.getDescription());
-        response.setCompleted(task.getCompleted());
-
-        return response;
+        return mapToResponse(task);
     }
 
     @Override
@@ -108,15 +79,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task saved = taskRepository.save(task);
 
-        TaskResponse response = new TaskResponse();
-
-        response.setId(saved.getId());
-        response.setTitle(saved.getTitle());
-        response.setDescription(saved.getDescription());
-        response.setCompleted(saved.getCompleted());
-
-        return response;
-
+        return mapToResponse(saved);
     }
 
     @Override
@@ -130,14 +93,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task update =  taskRepository.save(taskExists);
 
-        TaskResponse response = new TaskResponse();
-
-        response.setId(update.getId());
-        response.setTitle(update.getTitle());
-        response.setDescription(update.getDescription());
-        response.setCompleted(update.getCompleted());
-
-        return response;
+        return mapToResponse(update);
 
     }
 
@@ -145,10 +101,23 @@ public class TaskServiceImpl implements TaskService {
     public void deleteTask(Long id) {
 
         if(!taskRepository.existsById(id)){
-            throw new RuntimeException("Task not found");
+            throw new ResourceNotFoundException("Task not found with Id : " + id);
         }
 
         taskRepository.deleteById(id);
 
     }
+
+    private TaskResponse mapToResponse(Task task){
+
+        TaskResponse response = new TaskResponse();
+
+        response.setId(task.getId());
+        response.setTitle(task.getTitle());
+        response.setDescription(task.getDescription());
+        response.setCompleted(task.getCompleted());
+
+        return response;
+    }
+
 }
