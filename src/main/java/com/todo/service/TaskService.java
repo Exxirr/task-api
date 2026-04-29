@@ -1,5 +1,7 @@
 package com.todo.service;
 
+import com.todo.dto.TaskRequest;
+import com.todo.dto.TaskResponse;
 import com.todo.entity.Task;
 
 import java.util.List;
@@ -8,17 +10,17 @@ public interface TaskService {
 
     //CRUD CREATE READ UPDATE DELETE
 
-    List<Task> getAllTasks();
+    List<TaskResponse> getAllTasks();
 
-    List<Task> getCompletedTasks();
+    List<TaskResponse> getCompletedTasks();
 
-    Task getTaskById(Long id);
+    TaskResponse getTaskById(Long id);
 
-    Task patchTaskCompleted(Long id, boolean completed);
+    TaskResponse patchTaskCompleted(Long id, boolean completed);
 
-    Task createTask(Task task);
+    TaskResponse createTask(TaskRequest taskRequest);
 
-    Task updateTask(Long id, Task task);
+    TaskResponse updateTask(Long id, TaskRequest taskRequest);
 
     void deleteTask(Long id);
 

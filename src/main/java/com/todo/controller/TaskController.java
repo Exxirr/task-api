@@ -1,5 +1,7 @@
 package com.todo.controller;
 
+import com.todo.dto.TaskRequest;
+import com.todo.dto.TaskResponse;
 import com.todo.entity.Task;
 import com.todo.service.TaskService;
 import jakarta.validation.Valid;
@@ -18,36 +20,36 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTasks(){
+    public List<TaskResponse> getAllTasks(){
         return taskService.getAllTasks();
     }
 
     @GetMapping("/completed")
-    public List<Task> getAllTasksCompleted(){
+    public List<TaskResponse> getAllTasksCompleted(){
         return taskService.getCompletedTasks();
     }
 
     @GetMapping("/{id}")
-    public Task findById(@PathVariable Long id){
+    public TaskResponse findById(@PathVariable Long id){
         return taskService.getTaskById(id);
     }
 
 
     @PostMapping
-    public Task createTask(@Valid @RequestBody Task task){
-        return taskService.createTask(task);
+    public TaskResponse createTask(@Valid @RequestBody TaskRequest request){
+        return taskService.createTask(request);
     }
 
 
     //Todos los REQUEST PARAMS VAN DESPUES DEL ENDPOINT iniciando con "?"
     @PatchMapping("/{id}/completed")
-    public Task updateCompleted(@PathVariable Long id, @RequestParam boolean completed){
+    public TaskResponse updateCompleted(@PathVariable Long id, @RequestParam boolean completed){
         return taskService.patchTaskCompleted(id,completed);
     }
 
     @PutMapping("/{id}")
-    public Task updateTask(@Valid @RequestBody Task task, @PathVariable Long id){
-        return taskService.updateTask(id, task);
+    public TaskResponse updateTask(@Valid @RequestBody TaskRequest request, @PathVariable Long id){
+        return taskService.updateTask(id, request);
     }
 
     @DeleteMapping("/{id}")
