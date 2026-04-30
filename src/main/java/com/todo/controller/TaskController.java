@@ -35,7 +35,6 @@ public class TaskController {
         return taskService.getTaskById(id);
     }
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskResponse createTask(@Valid @RequestBody TaskRequest request){

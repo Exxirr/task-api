@@ -46,7 +46,6 @@ public class TaskServiceImpl implements TaskService {
         }
 
         return responses;
-
     }
 
     @Override
@@ -55,7 +54,6 @@ public class TaskServiceImpl implements TaskService {
         Task task =  taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found with Id " + id));
 
         return mapToResponse(task);
-
     }
 
     @Override
@@ -105,7 +103,6 @@ public class TaskServiceImpl implements TaskService {
         }
 
         taskRepository.deleteById(id);
-
     }
 
     private TaskResponse mapToResponse(Task task){
